@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Home from "./Home";
+import axios from "axios";
 
 const AddBook = () => {
   const navigate = useNavigate();
@@ -18,6 +19,26 @@ const AddBook = () => {
   const [title, setTitle] = useState("");
   const [author, setauthor] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleAddBook = () => {
+    const url = "http://localhost:5214/api/Library";
+    const data = {
+      title: title,
+      author: author,
+      description: description,
+    };
+    axios.post(url, data).then((result) => {
+      console.log(result.data);
+      cleanFields();
+      navigate("/");
+    });
+  };
+
+  const cleanFields = () => {
+    setTitle("");
+    setauthor("");
+    setDescription("");
+  };
 
   return (
     <>
@@ -92,6 +113,7 @@ const AddBook = () => {
                   <a
                     href=""
                     className="text-white text-lg font-bold flex justify-center items-center h-full"
+                    onClick={() => handleAddBook()}
                   >
                     <p>Add Book</p>
                   </a>

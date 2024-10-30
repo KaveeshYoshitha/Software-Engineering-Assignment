@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -51,8 +52,16 @@ const Home = () => {
   const [data, setData] = useState<Book[]>([]);
 
   useEffect(() => {
-    setData(bookData);
+    getData();
   }, []);
+
+  const getData = () => {
+    axios.get("http://localhost:5214/api/Library").then((result) => {
+      console.log(result.data);
+      setData(result.data);
+    });
+  };
+
   return (
     <>
       {/* Container */}
