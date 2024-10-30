@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 interface Book {
   id: number;
@@ -66,6 +67,7 @@ const Home = () => {
     <>
       {/* Container */}
       <div className=" min-h-screen bg-purple-900 ">
+        <ToastContainer />
         {/* Add gradient to the container */}
         <div className="absolute inset-0 bg-gradient-to-tr from-[#363537] to-[#EED9FF] opacity-70">
           {/* Header start*/}

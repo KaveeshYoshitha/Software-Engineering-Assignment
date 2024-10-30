@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Home from "./Home";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddBook = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const AddBook = () => {
   }
 
   const [title, setTitle] = useState("");
-  const [author, setauthor] = useState("");
+  const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
 
   const handleAddBook = () => {
@@ -30,19 +31,21 @@ const AddBook = () => {
     axios.post(url, data).then((result) => {
       console.log(result.data);
       cleanFields();
+      toast.success(`${title} has been added to the library`);
       navigate("/");
     });
   };
 
   const cleanFields = () => {
     setTitle("");
-    setauthor("");
+    setAuthor("");
     setDescription("");
   };
 
   return (
     <>
       <div className="h-screen bg-purple-900 ">
+        <ToastContainer />
         {/* Add gradient to the container start */}
         <div className="absolute inset-0 bg-gradient-to-tr from-[#363537] to-[#EED9FF] opacity-70">
           {/* Main Content div start*/}
@@ -85,7 +88,7 @@ const AddBook = () => {
                   border-0
                   outline-none"
                   value={author}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setAuthor(e.target.value)}
                 />
 
                 <label htmlFor="description">Description</label>
@@ -100,7 +103,7 @@ const AddBook = () => {
                   border-0
                   outline-none"
                   value={description}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </form>
 
@@ -109,27 +112,19 @@ const AddBook = () => {
               {/* Button div start */}
               <div className="bg-inherit w-full flex justify-start mt-5  ">
                 {/* Add Book Button */}
-                <button className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6">
-                  <a
-                    href=""
-                    className="text-white text-lg font-bold flex justify-center items-center h-full"
-                    onClick={() => handleAddBook()}
-                  >
-                    <p>Add Book</p>
-                  </a>
+                <button
+                  className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
+                  onClick={() => handleAddBook()}
+                >
+                  Add Book
                 </button>
 
                 {/* Go Back Button */}
-                <button className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out">
-                  <a
-                    href=""
-                    className="text-white text-lg font-bold flex justify-center items-center h-full"
-                    onClick={() => {
-                      handleNavigate();
-                    }}
-                  >
-                    <p>Go Back</p>
-                  </a>
+                <button
+                  className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
+                  onClick={() => handleNavigate()}
+                >
+                  Go Back
                 </button>
               </div>
               {/* Buttom div End */}
