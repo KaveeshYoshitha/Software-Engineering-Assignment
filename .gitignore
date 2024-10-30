@@ -1,0 +1,12 @@
+# Ignore Visual Studio files
+.vs/
+
+# Ignore build files
+bin/
+obj/
+
+# Ignore dependencies
+node_modules/
+
+# Ignore IDE-specific files
+.idea/
