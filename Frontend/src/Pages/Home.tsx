@@ -168,6 +168,16 @@ const Home = () => {
 
             {/* Table End */}
           </div>
+
+          {/* Footer */}
+          <div className="absolute bottom-0 w-full flex justify-center items-center bg-transparent  p-4 ">
+            <span className="text-lg md:text-xl text-white font-thin ">
+              Made with 💖 by{" "}
+              <a href="https://www.linkedin.com/in/kaveeshyoshitha/">
+                Kaveesh Yoshitha
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </>

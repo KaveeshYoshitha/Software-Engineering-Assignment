@@ -1,0 +1,46 @@
+Live Demo of the project -> https://youtu.be/sy1fn5VcgXk?si=LFigkTi_1FZlrxV9
+
+INSTRUCTIONS TO RUN THE PROJECT LOCALLY
+
+01. ensure you have the following installed on your machine:
+
+	Node.js
+	npm 
+	.NET SDK 
+	SQLite 
+02. clone the repository 
+	Repository link -> https://github.com/KaveeshYoshitha/Software-Engineering-Assignment
+
+03. Run the Backend First
+	Navigate to the backend folder then run it using visual studio Or you can use following commands
+	
+	cd Backend
+	dotnet restore
+	dotnet ef database update
+	dotnet run
+
+04. Then run the frontend
+	Navigate to the Frontend folder then run it using visual studio code Or you can use following commands
+	cd frontend
+	npm install
+	npm run dev
+
+
+5. Contact Information
+	If you encounter any problems while running the project, please contact:  yoshithakaveesh83@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
