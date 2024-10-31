@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 interface Book {
   id: number;
@@ -13,30 +13,6 @@ interface Book {
 const Home = () => {
   const navigate = useNavigate();
 
-  const bookData = [
-    {
-      id: 1,
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      description:
-        "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan, of lavish parties on Long Island at a time when The New York Times noted “gin was the national drink",
-    },
-    {
-      id: 2,
-      title: "The Catcher in the Rye",
-      author: "J.D. Salinger",
-      description:
-        "The hero-narrator of The Catcher in the Rye is an ancient child of sixteen, a native New Yorker named Holden Caulfield.",
-    },
-    {
-      id: 3,
-      title: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      description:
-        "The unforgettable novel of a childhood in a sleepy Southern town and the crisis of conscience that rocked it.",
-    },
-  ];
-
   const handleAddBook = () => {
     navigate("/add-book");
   };
@@ -45,8 +21,18 @@ const Home = () => {
     navigate(`/update-book/${id}`);
   };
   const handleDelete = (id: number, title: string) => {
-    if (window.confirm(`Delete book with id: ${id}`) == true) {
-      alert(`${title} has been deleted`);
+    if (window.confirm(`Delete ${title} with the ID number ${id}`) == true) {
+      axios
+        .delete(`http://localhost:5214/api/Library/${id}`)
+        .then((result) => {
+          if (result.status === 200) {
+            toast.success(`${title} has been deleted`);
+            getData();
+          }
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
     }
   };
 

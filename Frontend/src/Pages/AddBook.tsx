@@ -10,30 +10,28 @@ const AddBook = () => {
     navigate("/");
   };
 
-  interface Book {
-    id: number;
-    title: string;
-    author: string;
-    description: string;
-  }
-
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
 
   const handleAddBook = () => {
-    const url = "http://localhost:5214/api/Library";
+    const url: string = "http://localhost:5214/api/Library";
     const data = {
       title: title,
       author: author,
       description: description,
     };
-    axios.post(url, data).then((result) => {
-      console.log(result.data);
-      cleanFields();
-      toast.success(`${title} has been added to the library`);
-      navigate("/");
-    });
+    axios
+      .post(url, data)
+      .then((result) => {
+        console.log(result.data);
+        cleanFields();
+        alert(`${title} has been added to the library`);
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
   };
 
   const cleanFields = () => {

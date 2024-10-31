@@ -1,13 +1,61 @@
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
 
 const UpdateBook = () => {
+  const { id } = useParams<{ id: string }>();
+  const bookId: number = Number(id);
+
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate("/");
   };
+
+  const [updateTitle, setUpdateTitle] = useState("");
+  const [updateAuthor, setUpdateAuthor] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5214/api/Library/${bookId}`)
+      .then((result) => {
+        const book = result.data;
+        setUpdateTitle(book.title);
+        setUpdateAuthor(book.author);
+        setUpdateDescription(book.description);
+        console.log("Book Id is", bookId);
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  }, [bookId]);
+
+  const handleUpdateBook = (id: number) => {
+    console.log("Book ID is", bookId);
+    axios
+      .put(`http://localhost:5214/api/Library/${id}`, {
+        id: bookId,
+        title: updateTitle,
+        author: updateAuthor,
+        description: updateDescription,
+      })
+      .then((result) => {
+        if (result.status === 200) {
+          toast.success(`${updateTitle} has been updated`);
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  };
+
   return (
     <>
       <div className="h-screen bg-purple-900 ">
+        <ToastContainer />
         {/* Add gradient to the container start */}
         <div className="absolute inset-0 bg-gradient-to-tr from-[#363537] to-[#EED9FF] opacity-70">
           {/* Main Content div start*/}
@@ -28,6 +76,8 @@ const UpdateBook = () => {
                   type="text"
                   name="title"
                   id="title"
+                  value={updateTitle}
+                  onChange={(e) => setUpdateTitle(e.target.value)}
                   className="mb-5 rounded-xl
                   text-black
                   h-12
@@ -41,6 +91,8 @@ const UpdateBook = () => {
                   type="text"
                   name="author"
                   id="author"
+                  value={updateAuthor}
+                  onChange={(e) => setUpdateAuthor(e.target.value)}
                   className="mb-5 rounded-xl
                   text-black
                   h-12
@@ -54,6 +106,8 @@ const UpdateBook = () => {
                   type="text"
                   name="description"
                   id="description"
+                  value={updateDescription}
+                  onChange={(e) => setUpdateDescription(e.target.value)}
                   className="mb-5 rounded-xl
                   text-black
                   h-12
@@ -68,26 +122,20 @@ const UpdateBook = () => {
               {/* Button div start */}
               <div className="bg-inherit w-full flex justify-start mt-5  ">
                 {/* Add Book Button */}
-                <button className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6">
-                  <a
-                    href=""
-                    className="text-white text-lg font-bold flex justify-center items-center h-full"
-                  >
-                    <p>Update Book</p>
-                  </a>
+                <button
+                  type="submit"
+                  className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
+                  onClick={() => handleUpdateBook(bookId)}
+                >
+                  Add Book
                 </button>
 
                 {/* Go Back Button */}
-                <button className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out">
-                  <a
-                    href=""
-                    className="text-white text-lg font-bold flex justify-center items-center h-full"
-                    onClick={() => {
-                      handleNavigate();
-                    }}
-                  >
-                    <p>Go Back</p>
-                  </a>
+                <button
+                  className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
+                  onClick={() => handleNavigate()}
+                >
+                  Go Back
                 </button>
               </div>
               {/* Buttom div End */}
