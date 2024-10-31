@@ -2,7 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faTrash,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
+//Book interface for define the type of data
 interface Book {
   id: number;
   title: string;
@@ -11,37 +18,47 @@ interface Book {
 }
 
 const Home = () => {
+  //useNavigate hook for navigation
   const navigate = useNavigate();
-
+  //handleAddBook function for navigation to AddBook page
   const handleAddBook = () => {
     navigate("/add-book");
   };
 
+  //handleEdit function for navigation to UpdateBook page
   const handleEdit = (id: number) => {
     navigate(`/update-book/${id}`);
   };
+
+  //handleDelete function for delete a book
   const handleDelete = (id: number, title: string) => {
+    //check user really want to delete the book or not
     if (window.confirm(`Delete ${title} with the ID number ${id}`) == true) {
       axios
         .delete(`http://localhost:5214/api/Library/${id}`)
         .then((result) => {
           if (result.status === 200) {
+            //show the success message
             toast.success(`${title} has been deleted`);
+            //get the updated data from the db to the grid
             getData();
           }
         })
+        //show the error message
         .catch((error) => {
           toast.error(error);
         });
     }
   };
 
+  //useState hook for set the data . data is an array of Book type
   const [data, setData] = useState<Book[]>([]);
 
   useEffect(() => {
     getData();
   }, []);
 
+  //getData function for get the data from the db
   const getData = () => {
     axios.get("http://localhost:5214/api/Library").then((result) => {
       console.log(result.data);
@@ -68,19 +85,22 @@ const Home = () => {
           <div className="absolute inset-0 m-auto bg-[#16002B] h-4/5 w-11/12 md:w-4/5 flex flex-col justify-center items-center rounded-3xl px-2 md:px-0">
             {/*Add Book Button div start */}
             <div className="absolute top-0 left-0 right-0 h-14 flex justify-end items-center rounded-t-3xl px-4 md:px-6  ">
-              <button className=" bg-[#7809D0] w-36 md:w-72 h-10 md:h-3/4 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out text-white text-base md:text-lg font-bold">
-                <a
-                  href=""
-                  className="text-white text-lg font-bold flex justify-center items-center h-full"
-                  onClick={() => {
-                    handleAddBook();
-                  }}
-                >
-                  <p>Add Book</p>
-                </a>
+              <button
+                className=" bg-[#7809D0] w-36 md:w-72 h-10 md:h-3/4 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out text-white text-base md:text-lg font-bold"
+                onClick={() => {
+                  handleAddBook();
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  fade
+                  size="xl"
+                  style={{ color: "#ffffff" }}
+                />{" "}
+                Add Book
               </button>
             </div>
-            {/* Button div end */}
+            {/* Add Book Button div end */}
 
             {/* Table start */}
             <div className="w-full h-full mt-16 overflow-x-auto">
@@ -93,9 +113,13 @@ const Home = () => {
                     <th className="border border-white px-2 py-4">
                       Description
                     </th>
+                    <th className="border border-white px-2 py-4">
+                      Update | Delete
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
+                  {/* //map the data array to the table */}
                   {data.map((book) => (
                     <tr className="bg-[#32004A]" key={book.id}>
                       <td className="border border-white text-center px-2 py-2 text-sm md:text-lg">
@@ -110,40 +134,30 @@ const Home = () => {
                       <td className="border border-white text-center px-2 py-2 text-sm md:text-lg">
                         {book.description}
                       </td>
-                      <td>
+                      <td className="border border-white text-center px-2 py-2 text-sm md:text-lg flex justify-evenly">
                         {/* Edit Button */}
                         <button
-                          className="border-b border-b-white text-center ml-2 px-2 py-2 text-sm md:text-lg"
+                          className=" text-center ml-2 px-2 py-2 text-sm md:text-lg"
                           onClick={() => {
                             handleEdit(book.id);
                           }}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="yellow"
-                            className="size-6"
-                          >
-                            <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
-                          </svg>
+                          <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            size="xl"
+                            style={{ color: "#00ff04" }}
+                          />
                         </button>
                         {/* Delete Button */}
                         <button
-                          className="border-b border-b-white text-center ml-2 px-2 py-2 text-sm md:text-lg"
+                          className="text-center ml-2 px-2 py-2 text-sm md:text-lg"
                           onClick={() => handleDelete(book.id, book.title)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="red"
-                            className="size-6"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            size="xl"
+                            style={{ color: "#d60000" }}
+                          />
                         </button>
                       </td>
                     </tr>

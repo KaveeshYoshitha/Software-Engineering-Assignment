@@ -3,24 +3,36 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const AddBook = () => {
+  //useNavigate hook for navigation
   const navigate = useNavigate();
+  //handleNavigate function for navigation to Home page
   const handleNavigate = () => {
     navigate("/");
   };
 
+  //useState hook for set the data
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
 
+  //handleAddBook function for add a book to the library
   const handleAddBook = () => {
+    //check the input fields are empty or not
+    if (!title.trim() || !author.trim() || !description.trim()) {
+      toast.error("Please fill all the fields");
+    }
+
     const url: string = "http://localhost:5214/api/Library";
     const data = {
       title: title,
       author: author,
       description: description,
     };
+    //post the data to the db
     axios
       .post(url, data)
       .then((result) => {
@@ -29,11 +41,13 @@ const AddBook = () => {
         alert(`${title} has been added to the library`);
         navigate("/");
       })
+      //show the error message
       .catch((error) => {
         toast.error(error);
       });
   };
 
+  //cleanFields function for clear the input fields after submit data
   const cleanFields = () => {
     setTitle("");
     setAuthor("");
@@ -114,6 +128,12 @@ const AddBook = () => {
                   className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
                   onClick={() => handleAddBook()}
                 >
+                  <FontAwesomeIcon
+                    icon={faCirclePlus}
+                    beatFade
+                    size="xl"
+                    style={{ color: "#ffffff" }}
+                  />{" "}
                   Add Book
                 </button>
 
@@ -122,6 +142,12 @@ const AddBook = () => {
                   className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
                   onClick={() => handleNavigate()}
                 >
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    beatFade
+                    size="xl"
+                    style={{ color: "#ffffff" }}
+                  />{" "}
                   Go Back
                 </button>
               </div>

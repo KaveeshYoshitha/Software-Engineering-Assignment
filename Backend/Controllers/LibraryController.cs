@@ -10,7 +10,7 @@ namespace Backend.Controllers
     [ApiController]
     public class LibraryController : ControllerBase
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext; //define the local variable
         public LibraryController(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;

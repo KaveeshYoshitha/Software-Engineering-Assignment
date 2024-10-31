@@ -3,37 +3,56 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const UpdateBook = () => {
+  //useParams hook for get the id from the url
   const { id } = useParams<{ id: string }>();
+  //convert the id"s type into number
   const bookId: number = Number(id);
 
+  //useNavigate hook for navigation
   const navigate = useNavigate();
+  //handleNavigate function for navigation to Home page
   const handleNavigate = () => {
     navigate("/");
   };
 
+  //useState hook for set the data
   const [updateTitle, setUpdateTitle] = useState("");
   const [updateAuthor, setUpdateAuthor] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
 
+  //useEffect hook for get the data from the db according to the id
   useEffect(() => {
     axios
       .get(`http://localhost:5214/api/Library/${bookId}`)
       .then((result) => {
+        //Load the data into the input fields
         const book = result.data;
         setUpdateTitle(book.title);
         setUpdateAuthor(book.author);
         setUpdateDescription(book.description);
         console.log("Book Id is", bookId);
       })
+      //show the error message
       .catch((error) => {
         toast.error(error);
       });
   }, [bookId]);
 
+  //handleUpdateBook function for update a book
   const handleUpdateBook = (id: number) => {
-    console.log("Book ID is", bookId);
+    //check the input fields are empty or not
+    if (
+      !updateTitle.trim() ||
+      !updateAuthor.trim() ||
+      !updateDescription.trim()
+    ) {
+      toast.error("Please fill all the fields");
+    }
+    //Update the data in the db
     axios
       .put(`http://localhost:5214/api/Library/${id}`, {
         id: bookId,
@@ -127,7 +146,13 @@ const UpdateBook = () => {
                   className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
                   onClick={() => handleUpdateBook(bookId)}
                 >
-                  Add Book
+                  <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    beatFade
+                    size="xl"
+                    style={{ color: "#ffffff" }}
+                  />
+                  Update Book
                 </button>
 
                 {/* Go Back Button */}
@@ -135,6 +160,12 @@ const UpdateBook = () => {
                   className=" bg-[#7809D0] w-72 h-12 rounded-3xl hover:bg-[#DBADFF] transition duration-300 ease-in-out mr-6 text-white text-lg font-bold"
                   onClick={() => handleNavigate()}
                 >
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    beatFade
+                    size="xl"
+                    style={{ color: "#ffffff" }}
+                  />{" "}
                   Go Back
                 </button>
               </div>

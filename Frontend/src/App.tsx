@@ -5,11 +5,6 @@ import AddBook from "./Pages/AddBook";
 
 function App() {
   return (
-    // <>
-    //   <Home />
-    //   {/* <AddBook /> */}
-    //   {/* <UpdateBook /> */}
-    // </>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />

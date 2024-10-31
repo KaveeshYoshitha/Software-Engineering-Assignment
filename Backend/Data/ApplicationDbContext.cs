@@ -10,6 +10,6 @@ namespace Backend.Data
             
         }
 
-        public DbSet<Library> Books { get; set; }
+        public DbSet<Library> Books { get; set; } //define the table name that you want to create 
     }
 }
