@@ -1,4 +1,4 @@
-# Software-Engineering-Assignment
+# Library Management System
 Watch a demo of the project --> https://youtu.be/sy1fn5VcgXk?si=X_6R6Fyed7ODqEc8
  
 The objective of this project was to design and implement a comprehensive Library 
